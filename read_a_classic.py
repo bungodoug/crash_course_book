@@ -3,6 +3,10 @@ filename = "/Users/douglassmith/Documents/crashcourse material/little_women_samp
 
 book_text = ""
 
+# read file in line by line. stip off any blank spaces and also ignore
+# any lines with done not begin with an alpha. append each line to
+# create a single large string.
+
 with open(filename) as file_object:
     for line in file_object:
         try:
@@ -14,14 +18,19 @@ with open(filename) as file_object:
             pass
         else:
             pass
+        
+#split the large book string into a list of individual words.
 
-unique_words = []
 all_words = book_text.split(" ")
 
-# print (all_words)
+#initials
 
-pre_processed_words = []
+unique_words = [] # this will be used to store each unique word
+pre_processed_words = [] # this will hold the cleansed/parsed form of each word
 
+# this is a course cleansing activity to remove quote marks or
+# apostraphies. Iterate through each word and remove anything that
+# isn't an alplha.
 # may revisit below to define a list of non aplhas that i would
 # like to treat as alphas ... such as ' (contraction) or - (hyphen)
 
@@ -32,36 +41,38 @@ for word in all_words:
             parsed_word += character
     pre_processed_words.append(parsed_word)
 
-# print(pre_processed_words)
+# create a dictionary "word_count" that will be used to store each unique
+# word and the number of times that word appears in the text. The key
+# value pairs are the word:word_frequency. will store the lower case form of
+# the word to ensure no duplication
 
 word_count = {}
 
 for word in pre_processed_words:
     word = word.lower()
-    if word not in unique_words:
+    if word not in unique_words: #new word, create KV pair with freq set to 1
         kv_pair = {word: 1}
         word_count.update(kv_pair)
         unique_words.append(word.lower())
     else:
-        word_score = word_count.get(word)
-        # print(word_score)
+        word_score = word_count.get(word) #not unique, increase freq count by 1
         word_score += 1
-        # print(word_score)
         kv_pair = {word: word_score}
         word_count.update(kv_pair)
 
-# print(len(all_words))
-# print(len(pre_processed_words))
-# print(len(unique_words))
-# print(word_count)
 
-# list out keys and values separately
+
+# list out keys and values separately. this will enable dictionary objects
+# to be faux sorted. create a descending value list to identify the top
+# occuring words.
+
 key_list = list(word_count.keys())
 val_list = list(word_count.values())
-
-print((val_list))
 sorted_val_list = val_list.sort(reverse=True)
-print((sorted_val_list))
+
+# produce some basic statistics to give a sense of the text analyis.
+# calculate how many high frequency words represent x% of the total
+# word count.
 
 dict_word_count = sum(word_count.values()) #how many words used in total
 print(dict_word_count,"unique words have been used in the text supplied")
@@ -75,14 +86,10 @@ while parito_count <= parito_target:
 
 print(index, "words account for", parito_breakpoint*100,"% of word occurrences")
 
+# create lists for the high frequencet word keys and values.
+
 parito_key_list = key_list[0:index]
 parito_val_list = val_list[0:index]
-
-print(parito_key_list)
-print(parito_val_list)
-
-# this is someone else's code ... will look at it to see what i can
-# learn ... but will try pandas approach first.
 
 # import pandas as pd
 
